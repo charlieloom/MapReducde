@@ -1,4 +1,4 @@
-package main
+package MapReducde
 
 import (
 	"log"
@@ -7,23 +7,20 @@ import (
 	"github.com/IBM/sarama"
 )
 
-var producer sarama.SyncProducer
-
-func Init(address []string) error {
-	err := initProducer(address)
-	return err
-}
-func initProducer(address []string) error {
+func InitKMr(address []string) (KafkaMapReduce, error) {
 	// 配置
 	config := sarama.NewConfig()
 	config.Producer.Return.Successes = true
 	config.Producer.Timeout = 5 * time.Second
 	p, err := sarama.NewSyncProducer(address, config)
-	producer = p
 
+	mr := KafkaMapReduce{
+		producer: p,
+		address:  address,
+	}
 	if err != nil {
 		log.Printf("new sync producer error : %s \n", err.Error())
-		return err
+		return mr, err
 	}
-	return nil
+	return mr, nil
 }

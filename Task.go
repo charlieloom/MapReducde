@@ -1,4 +1,4 @@
-package main
+package MapReducde
 
 type Task struct {
 	Param    string `json:"param,omitempty"`
